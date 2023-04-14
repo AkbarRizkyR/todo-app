@@ -1,44 +1,42 @@
 // src/App.js
 import React, { useState } from 'react';
 import TodoForm from './components/TodoForm';
-import TodoItem from './components/TodoItem';
-import './index.css';
+import Todo from './components/Todo';
 
 function App() {
-  const [todos, setTodos] = useState([]);
   const [input, setInput] = useState('');
+  const [todos, setTodos] = useState([]);
 
   const addTodo = (e) => {
     e.preventDefault();
-
-    if (!input.trim()) return;
-
-    setTodos([...todos, { text: input, completed: false }]);
-    setInput('');
+    if (input.trim()) {
+      setTodos([...todos, { id: Date.now(), text: input, completed: false }]);
+      setInput('');
+    }
   };
 
-  const toggleTodo = (index) => {
-    const newTodos = [...todos];
-    newTodos[index].completed = !newTodos[index].completed;
-    setTodos(newTodos);
+  const toggleComplete = (id) => {
+    setTodos(
+      todos.map((todo) =>
+        todo.id === id ? { ...todo, completed: !todo.completed } : todo
+      )
+    );
   };
 
-  const deleteTodo = (index) => {
-    const newTodos = todos.filter((_, i) => i !== index);
-    setTodos(newTodos);
+  const deleteTodo = (id) => {
+    setTodos(todos.filter((todo) => todo.id !== id));
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 py-10">
-      <div className="max-w-md mx-auto bg-white rounded-xl shadow-md p-8">
-        <h1 className="text-2xl font-bold mb-5">Todo List</h1>
-        <TodoForm input={input} setInput={setInput} addTodo={addTodo} />
-        {todos.map((todo, index) => (
-          <TodoItem
-            key={index}
+    <div className="container mx-auto max-w-md p-4">
+      <h1 className="text-4xl font-bold mb-4">Todo List</h1>
+      <TodoForm input={input} setInput={setInput} addTodo={addTodo} />
+      <div className="todos">
+        {todos.map((todo) => (
+          <Todo
+            key={todo.id}
             todo={todo}
-            index={index}
-            toggleTodo={toggleTodo}
+            toggleComplete={toggleComplete}
             deleteTodo={deleteTodo}
           />
         ))}
