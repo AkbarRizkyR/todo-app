@@ -1,0 +1,9 @@
+/* src/components/TodoForm.module.css */
+.todoForm :global(input) {
+    @apply rounded-l-md p-4 border-t mr-0 border-b border-l border-gray-200 bg-white;
+  }
+  
+  .todoForm :global(button) {
+    @apply px-8 rounded-r-md bg-blue-500 text-white;
+  }
+  
